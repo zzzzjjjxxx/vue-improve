@@ -26,3 +26,4 @@ data = {
 # 4 更新数据的时候，最简单的方法是通过 .length来判断是否符合要求，再进行提交操作
 # 5 JS将秒换成时分秒 formatSeconds
 # 6 :class="{active:(index===1)}"根据index来确定是否进行某个样式的绑定
+# 7 对比可以看出v-if直接从代码中删除了，v-show只是通过display来切换状态，因此建议频繁切换的话用v-show比较好
