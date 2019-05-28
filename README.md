@@ -72,3 +72,46 @@ vm.c.c1 = 2
         })
       }
     }
+# 11 组件里面的两种方法好像是一样的，都是从父页面引用过来，或者
+   if (item.data.product.name === '地图导航') {
+          this.$emit('getAddress')
+          this.getAddress()
+        } else if (item.data.product.name === '联系电话') {
+          this.makePhoneCall()
+          this.$emit('makePhoneCall')
+        }上面是我的猜测
+          if (item.data.product.name === '地图导航') {
+          this.$emit('getAddress')// 父页面有这个方法
+        } else if (item.data.product.name === '联系电话') {
+          this.makePhoneCall() // 父页面没有这个方法，但是其他页面有，多处都定义了
+        }是真实的内容，
+ # 12
+   this.$emit('productId', [item.data.product.id, jumpType])对应父页面里面 <swiperWan @productId="getJumpWay" :data="item.data" v-if="item.name==='wSlider'" url="../loading/index"></swiperWan>的方法是写出来的，   
+   getJumpWay (data) {
+      if (data[1] === 1) {
+        wx.navigateTo({
+          url: '../product/detail/index?id=' + data[0]
+        })
+      } else if (data[1] === 2) {
+        wx.navigateTo({
+          url: `../../packageA/pages/customPage/index?id=${data[0]}`
+        })
+      }其中data[0],data[1],分别对应两个参数
+      
+    },
+# 13 因为本来我写在页面里面，是通过this.flag来判断的，但是现在还有一个办法就是，往列表的元素里面 通过this.$set()来添加元素
+    // 结束视频播放的时候
+    videoStop (item) {
+      this.$set(item, 'videoFlag', false)
+      this.$set(item, 'videoContext', null)
+    },
+    // 播放视频
+    videoPlay (id, item) {
+      this.data.list.map(child => {
+        this.$set(child, 'videoFlag', false)
+        this.$set(child, 'videoContext', null)
+      })
+      this.$set(item, 'videoFlag', true)
+      this.$set(item, 'videoContext', wx.createVideoContext(id))
+      item.videoContext.play()
+    }
