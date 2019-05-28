@@ -6,3 +6,12 @@ data = {
     info: {
         content: 'my name is test'
     }
+# 1
+  list.forEach(e => {
+            this.list.push(e)
+          })
+             list.map(item => {
+          if (!item.correspondUser || !item.correspondUser.name) {
+            item.correspondUser = { name: '未完善' }
+          }
+        })一个修改item，一个修改list
