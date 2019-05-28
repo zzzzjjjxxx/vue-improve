@@ -64,3 +64,11 @@ vm.c.c1 = 2
 原文：https://blog.csdn.net/weixin_41111068/article/details/83046691 
 版权声明：本文为博主原创文章，转载请附上博文链接！
 和深度无关，而是在修改（不是替换）对象或数组时，旧值将与新值相同，因为它们索引同一个对象/数组。
+# 10 根据传过来的type的变化来更新
+ data (newValue, oldValue) {
+      if (newValue.type !== oldValue.type) {
+        wx.reLaunch({
+          url: this.url
+        })
+      }
+    }
