@@ -15,3 +15,5 @@ data = {
             item.correspondUser = { name: '未完善' }
           }
         })一个修改item，一个修改list
+# 2
+`您好！我是${this.companyName}的${this.name},这是我的名片`要用到data里的数据的时候，放在一个字符串里，可以这么写
