@@ -115,3 +115,5 @@ vm.c.c1 = 2
       this.$set(item, 'videoContext', wx.createVideoContext(id))
       item.videoContext.play()
     }
+# 14 页面里面变量的写法
+`top: ${stickyTop}px; z-index: ${zIndex}`
