@@ -149,3 +149,14 @@ const defaultForm = {
               this.loading = false
             })
     
+# 如何复用组件，比如说进入同一个页面，需要根据传递进去不同的参数，来做不同的做法
+<template>
+  <article-detail :is-edit="true"/>
+</template>
+<script>
+import ArticleDetail from './components/ArticleDetail'
+export default {
+  name: 'EditForm',
+  components: { ArticleDetail }
+}
+</script> // 它是往ArticleDetail这个组件里面传递了一个is-edit这个参数
