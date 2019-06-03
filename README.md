@@ -168,8 +168,8 @@ export default {
     }
   },
 # 19小程序复用组件
-    async selectRanking () {
-        const { data: { RankingList: { list, nextPage, pageNum, lastPage } } } = await apicustom.selectRanking({ pageNum: this.pageNum, pageSize: this.pageSize })
+async selectRanking () {
+  const { data: { RankingList: { list, nextPage, pageNum, lastPage } } } = await apicustom.selectRanking({ pageNum: this.pageNum,pageSize: this.pageSize })
         this.persons = list
         // this.person = this.personslist.slice(1, (this.personslist.length))
         this.lastPage = lastPage
@@ -177,7 +177,7 @@ export default {
         this.nextPage = nextPage
         if (this.pageNum === 1) {
           this.personslist = this.persons
-          this.avatarUrlFirst = this.personslist[0].avatarUrl ? this.personslist[0].avatarUrl : 'https://oss.wq1516.com/default-avatar.png'
+          this.avatarUrlFirst = this.personslist[0].avatarUrl ? this.personslist[0].avatarUrl : 'https://oss.wq1516.com/defaultavatar.png'
           this.nameFirst = this.personslist[0].name ? this.personslist[0].name : 0
           this.bindingNumFirst = this.personslist[0].bindingNum ? this.personslist[0].bindingNum : 0
           this.praiseNumFirst = this.personslist[0].praiseNum ? this.personslist[0].praiseNum : 0
@@ -187,9 +187,9 @@ export default {
           })
         }
       }
-        // 上拉加载
-    async onReachBottom () {
-      if (this.pageNum < this.lastPage) {
+// 上拉加载
+async onReachBottom () {
+  if (this.pageNum < this.lastPage) {
         this.pageNum = this.nextPage
         this.selectRanking()
       } else {
@@ -211,7 +211,7 @@ export default {
       this.selectRanking()
     },
     // 
-    data:{ 
+data:{ 
         pageNum: 1,
         lastPage: 100,
         nextPage: 1,
