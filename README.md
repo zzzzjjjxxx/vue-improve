@@ -149,7 +149,7 @@ const defaultForm = {
               this.loading = false
             })
     
-# 如何复用组件，比如说进入同一个页面，需要根据传递进去不同的参数，来做不同的做法
+# 18 如何复用组件，比如说进入同一个页面，需要根据传递进去不同的参数，来做不同的做法
 <template>
   <article-detail :is-edit="true"/>
 </template>
@@ -167,3 +167,53 @@ export default {
       default: false
     }
   },
+# 19小程序复用组件
+    async selectRanking () {
+        const { data: { RankingList: { list, nextPage, pageNum, lastPage } } } = await apicustom.selectRanking({ pageNum: this.pageNum, pageSize: this.pageSize })
+        this.persons = list
+        // this.person = this.personslist.slice(1, (this.personslist.length))
+        this.lastPage = lastPage
+        this.pageNum = pageNum
+        this.nextPage = nextPage
+        if (this.pageNum === 1) {
+          this.personslist = this.persons
+          this.avatarUrlFirst = this.personslist[0].avatarUrl ? this.personslist[0].avatarUrl : 'https://oss.wq1516.com/default-avatar.png'
+          this.nameFirst = this.personslist[0].name ? this.personslist[0].name : 0
+          this.bindingNumFirst = this.personslist[0].bindingNum ? this.personslist[0].bindingNum : 0
+          this.praiseNumFirst = this.personslist[0].praiseNum ? this.personslist[0].praiseNum : 0
+        } else {
+          this.persons.forEach(e => {
+            this.personslist.push(e)
+          })
+        }
+      }
+        // 上拉加载
+    async onReachBottom () {
+      if (this.pageNum < this.lastPage) {
+        this.pageNum = this.nextPage
+        this.selectRanking()
+      } else {
+        wx.showToast({
+          title: '没有更多了',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    },
+    // 下拉刷新
+    async onPullDownRefresh () {
+      this.pageNum = 1
+      this.selectRanking()
+      wx.stopPullDownRefresh()
+    },
+    onLoad () {
+      this.pageNum = 1
+      this.selectRanking()
+    },
+    // 
+    data:{ 
+        pageNum: 1,
+        lastPage: 100,
+        nextPage: 1,
+        pageSize: 6
+        }
