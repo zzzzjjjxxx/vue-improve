@@ -130,3 +130,4 @@ const defaultForm = {
   type: 1,
   content: ''
 }
+<el-form ref="postForm" :model="postForm" class="form-container">
