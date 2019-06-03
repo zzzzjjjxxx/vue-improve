@@ -169,19 +169,19 @@ export default {
   },
 # 19小程序复用组件
 async selectRanking () {
-  const { data: { RankingList: { list, nextPage, pageNum, lastPage } } } = await apicustom.selectRanking({ pageNum: this.pageNum,pageSize: this.pageSize })
+  const { data: { RankingList: { list, nextPage, pageNum, lastPage } } } = await apicustom.selectRanking({pageNum:this.pageNum,pageSize:this.pageSize })
         this.persons = list
         // this.person = this.personslist.slice(1, (this.personslist.length))
-        this.lastPage = lastPage
-        this.pageNum = pageNum
-        this.nextPage = nextPage
-        if (this.pageNum === 1) {
+        this.lastPage = lastPage // 先在这里获取最后一页
+        this.pageNum = pageNum // page当前页面码
+        this.nextPage = nextPage // 下一页的页码数
+        if (this.pageNum === 1) { // 如果只是请求第一页面的数据的话，就把显示的列表，赋值为所有获取到的数据
           this.personslist = this.persons
-          this.avatarUrlFirst = this.personslist[0].avatarUrl ? this.personslist[0].avatarUrl : 'https://oss.wq1516.com/defaultavatar.png'
+          this.avatarUrlFirst = this.personslist[0].avatarUrl ? this.personslist[0].avatarUrl:'https://oss.wq1516.com/defaultavatar.png'
           this.nameFirst = this.personslist[0].name ? this.personslist[0].name : 0
           this.bindingNumFirst = this.personslist[0].bindingNum ? this.personslist[0].bindingNum : 0
           this.praiseNumFirst = this.personslist[0].praiseNum ? this.personslist[0].praiseNum : 0
-        } else {
+        } else { // 如果获取的不是第一页的内容的话，就要把获取到的数据，加到你所要展示的数据上去
           this.persons.forEach(e => {
             this.personslist.push(e)
           })
@@ -189,11 +189,11 @@ async selectRanking () {
       }
 // 上拉加载
 async onReachBottom () {
-  if (this.pageNum < this.lastPage) {
-        this.pageNum = this.nextPage
-        this.selectRanking()
+  if (this.pageNum < this.lastPage) { // 如果当前页面小于最后一页
+        this.pageNum = this.nextPage // 把当前页面，变成下一页面的页面数
+        this.selectRanking() // 进行对后台数据的请求
       } else {
-        wx.showToast({
+        wx.showToast({ // 如果当前页面处于最后一页，就提示没有数据了
           title: '没有更多了',
           icon: 'none',
           duration: 2000
@@ -202,13 +202,13 @@ async onReachBottom () {
     },
     // 下拉刷新
     async onPullDownRefresh () {
-      this.pageNum = 1
-      this.selectRanking()
-      wx.stopPullDownRefresh()
+      this.pageNum = 1 // 只请求第一页面的列表数据
+      this.selectRanking() // 进行数据的请求
+      wx.stopPullDownRefresh() // 停止下拉刷新
     },
     onLoad () {
-      this.pageNum = 1
-      this.selectRanking()
+      this.pageNum = 1 // 刚进入页面的时候，只请求第一页的数据
+      this.selectRanking() // 进行数据加载
     },
     // 
 data:{ 
