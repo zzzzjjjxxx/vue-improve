@@ -117,3 +117,16 @@ vm.c.c1 = 2
     }
 # 14 页面里面变量的写法
 `top: ${stickyTop}px; z-index: ${zIndex}`
+# 15  if (!response.data.items) return
+在我们获取列表的时候，进行对列表先处理判断，防止列表为空，报错等等
+# 16 根据点击到这个页面，进入这个页面传递过来的参数对表单=》进行不同的处理
+this.postForm = Object.assign({}, defaultForm)是对页面所有的表单进行置空的操作
+const defaultForm = {
+  name: '',
+  id: '',
+  title: '',
+  substance: '',
+  imgUrl: '',
+  type: 1,
+  content: ''
+}
