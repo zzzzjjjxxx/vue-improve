@@ -130,4 +130,22 @@ const defaultForm = {
   type: 1,
   content: ''
 }
-<el-form ref="postForm" :model="postForm" class="form-container">
+<el-form ref="postForm" :model="postForm" class="form-container">等等
+    
+# 17 在更新一个数据的时候，或者保存提交发布一个数据的时候，需要对返回的状态code===200或400进行判断，处理着来做一个提示
+     updateItem(this.postForm).then(response => {
+              if (response.data.code === 200) { 
+                this.loading = true //如果发布成功，就不要进行一个loading框的显示
+                this.$notify({ 
+                  title: '成功',
+                  message: '发布成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                this.$router.replace({ path: '/article/list' }) // 进行一个成功之后的跳转 <el-button v-loading="loading" class="save" @click="submitForm">保存</el-button>一开始是false
+              } else {
+                this.loading = false 
+              }
+              this.loading = false
+            })
+    
