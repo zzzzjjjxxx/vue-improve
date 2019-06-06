@@ -162,7 +162,7 @@ export default {
 </script> // 它是往ArticleDetail这个组件里面传递了一个is-edit（等于isEdit）这个参数
 // 以下是ArticleDetail里接收父组件传过来的内容
   props: {
-    isEdit: { // create的时候为false，edit为true
+    isEdit: { // create的时候为false，edit为true,在子组件里面用来接收传过来的参数，可以使用
       type: Boolean,
       default: false
     }
