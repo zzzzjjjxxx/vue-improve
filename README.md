@@ -217,6 +217,7 @@ data:{
         nextPage: 1,
         pageSize: 6
         }
+        
 # 19 ref用来访问子组件实例或者子元素
 尽管有Prop和事件，有的时候你仍然可能需要在JavaScript里直接访问一个子组件，为了达到这个目的，可以通过ref特性为这个子组件赋予一个id引用
 例如<base-input ref="usernameInput"></base-input>现在定义了这个ref的组件里，可以使用
@@ -245,3 +246,44 @@ this.$refs.usernameInput来访问这个<base-input>实例
     --------------
     $refs只会在组件渲染完成之后生效，并且它们不是响应式的。这仅仅是一个用于直接操作子组件的“逃生舱”，应该避免在模板(?)或计算属性(?)中访问$ref
     
+# 20 内联模板
+当 inline-templete这个特殊的特性出现在一个子组件上时，这个组件将会使里面的内容作为模板，而不是将其作为发布的内容。
+<my-component inline-templete>
+    <div>
+        <p></p>
+    </div>
+    </component>
+    内联模板需要定义在vue所属的DOM元素内？
+    不过，inline-template会让模板的作用域变得更加难以理解。
+# X-Template
+ 另外一个定义模板的方式是在一个<script>元素中，并为其带上 text/x-template的类型，然后通过一个id将模板引用过去
+ <script type="text/x-template" id="hello">
+     <p></p>
+    </script>
+    Vue.component('hello-world', {
+    template:'#hello'
+    })
+    x-template需定义在vue所属的DOM元素外？
+    
+# 计算属性 
+模板内的表达式非常便利，但是设计它们的初衷是用于简单运算的。在模板中放入太多的逻辑会让模板过重而且难以维护
+<div id="example">
+    {{ message.split('').reverse().join('') }}
+    </div>
+    在这个地方，模板不再是简单的生命式逻辑。你必须看看一段时间才能意识到，这是想要显示变量message的翻转字符串。当你想要在模板中多次引用此处的翻转字符串时，会更加难以处理，（对于复杂的逻辑，应该使用计算属性）
+    -------以下是举例分割线
+    <div id="example">
+    <p>{{ msg }}</p>
+    <p>{{ reversemsg }}</p>
+    </div>
+    var vm = new Vue({
+    data:{
+    message: 'hello'
+    },
+    computed: {
+    reversemsg () {
+    // this指向vm实例
+    return this.message.split('').reverse().join('')
+    }
+    }
+    })
