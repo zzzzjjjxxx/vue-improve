@@ -217,3 +217,32 @@ data:{
         nextPage: 1,
         pageSize: 6
         }
+# 19 ref
+用来访问子组件实例或者子元素
+尽管有Prop和事件，有的时候你仍然可能需要在JavaScript里直接访问一个子组件，为了达到这个目的，可以通过ref特性为这个子组件赋予一个id引用
+例如<base-input ref="usernameInput"></base-input>现在定义了这个ref的组件里，可以使用
+this.$refs.usernameInput来访问这个<base-input>实例
+    程序化地从一个父组件聚焦在这个输入框
+<base-input>组件也可以用一个类似的ref提供对内部这个指定元素的访问？
+甚至可以通过其他父级组件定义方法
+    // 子组件的写法
+    <base-input ref="usernameInput"><input ref="input"></base-input>
+    methods:{
+    focus:function (){
+    this.$refs.input.focus()
+}
+    }
+    // 父组件的调用方法
+    this.$refs.usernameIput.focus()
+    ----------
+    当ref和v-for一起用的时候，你得到的引用将会是一个包含了对应数据源的这些子组件的数组
+    <div v-for="item in list" ref="list">
+        <h1>{{item}}</h1>
+    </div>
+    父组件里我对它进行一个引用，this.$refs.list得到的是
+    <div><h1>{{item1}}</h1></div>
+    <div><h1>{{item2}}</h1></div>
+    <div><h1>{{item3}}</h1></div>
+    --------------
+    $refs只会在组件渲染完成之后生效，并且它们不是响应式的。这仅仅是一个用于直接操作子组件的“逃生舱”，应该避免在模板(?)或计算属性(?)中访问$ref
+    
