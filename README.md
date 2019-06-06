@@ -289,3 +289,22 @@ this.$refs.usernameInput来访问这个<base-input>实例
     })
 ----ref被用来给元素或者子组件注册引用信息，引用信息将会注册在父组件的$refs对象上。
 重点！关于ref注册时间，因为ref本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们，它们还不存在!$refs也不是响应式的，因此你不应该视图用它在模板中做数据绑定
+# el
+提供一个在页面上已存在的dom元素作为vue的挂载目标。可以是css选择器，也可以是一个htmlelement的实例，
+# beforeCreate
+在初始化之后，数据观测和event/watcher事件配置之前被调用
+# created
+数据观测，属性和方法的运算，watch/event事件回调
+但是挂载还没开始，$el属性目前不可见
+# beforeMounted
+在挂载之前被调用：相关的render函数首次被调用
+渲期间不被调用
+# mounted
+el被新创建的$el替换，并挂载到实例上去之后调用该钩子，但是它不承诺把所有子组件一起挂载，
+如果希望等到整个视图都渲染完毕，可以用this.$nextTick替换掉mounted
+mounted () {
+this.$nextTick(function () {
+})
+# upadated 
+由于数据更改导致的虚拟dom重新渲染和打补丁，在这之后会调用这个钩子，所以最好避免在这期间更改状态
+
