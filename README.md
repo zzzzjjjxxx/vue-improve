@@ -217,8 +217,7 @@ data:{
         nextPage: 1,
         pageSize: 6
         }
-# 19 ref
-用来访问子组件实例或者子元素
+# 19 ref用来访问子组件实例或者子元素
 尽管有Prop和事件，有的时候你仍然可能需要在JavaScript里直接访问一个子组件，为了达到这个目的，可以通过ref特性为这个子组件赋予一个id引用
 例如<base-input ref="usernameInput"></base-input>现在定义了这个ref的组件里，可以使用
 this.$refs.usernameInput来访问这个<base-input>实例
