@@ -349,7 +349,7 @@ npm install --save-dev @babel/core
 你可以在JavaScript程序中直接require并使用它：
 const babel = require（"@babel/core"）;
 babel.transform("code",optionsObject);
-作为一名最终用户，你可以需要安装其他工具作为@babel/core的使用接口？并很好的集成到你的开发流程中
+作为一名最终用户，你可以需要安装其他工具作为@babel/core的使用接口？(webpack)并很好的集成到你的开发流程中
 @babel/cli是能够从终端命令行使用的工具
 这能解析src目录下的所有JavaScript文件，并应用我们所指定的代码转化功能，然后把每个文件输出到lib目录下。
 由于我们还没有指定任何代码转化功能，所以输出的代码和输入的代码的代码相同（不保留源代码格式），我们可以将我们所需的代码转化功能作为参数传递进去
