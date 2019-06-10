@@ -307,4 +307,59 @@ this.$nextTick(function () {
 })
 # upadated 
 由于数据更改导致的虚拟dom重新渲染和打补丁，在这之后会调用这个钩子，所以最好避免在这期间更改状态
+# 认识flow
+flow是Facebook出品的JavaScript静态类型检查工具。vue.js的源码用flow做了静态类型检查。所以了解flow有助于阅读源码
+JavaScript是动态类型语言，它的灵活性好，但是容易写成隐蔽性强的隐患代码，在编译初期不会报错，运行阶段出现bug
+类型检查是当前语言类型的发展趋势，类型检查，就是在编译早起尽早发现bug，但是不影响代码运行(不需要运行时候动态类型检查)
+项目越复杂越需要通过工具来保证项目的维护性和增强代码的可读性。
+vue.js在做2.0重构的时候回，在es2015的基础上，出来eslint保证代码风格之外，引入flow做静态类型检查。之
+之所以选择flow，主要是因为在babel和eslint都有对应的flow插件以支持语法，可以沿用构建配置，非常小的成本的改动可以拥有静态类型检查的能力
+# babel是什么
+babel是一个JavaScript编译器，babel是一个工具链，主要讲ecmascript2015+的版本的代码转化为向后兼容的JavaScript，以便能能够运行当前和旧版本额浏览器
+源码转化
+通过@polyfill或者@babel模块在目标环境中添加缺失的特性
+babel工具链是由大量的工具组成的，这些工具都简化了babel的使用，如果你在使用一套框架，babel可能已经为你配置好了
+本指南将向你展示如何在es2015的JavaScript代码编译为能在当前浏览器上工作的代码
+配置过程包括1.运行以下命令安装所需要的包
+npm install --save-dev @babel/core @babel/cli @babel/preset-env
+npm install --save @babel/poyfill
+2.在项目的根目录下创建一个名为babel.config.js的配置文件：
+const presets = [
+[
+"@babel/env",
+{
+targets：{
+edge：“17”，
+Firefox：“60”，
+chrome：“67”，
+Safari："11.1"
+},
+useBuiltIns：“usage”
+}
+]
+]；
+module.exports = { presets };
+]
+3.运行这个命令将src目录下所有代码编译到lib目录：
+./node_modules/.bin/babel src --out-dir lib这一句的意思就是可以用npm@5.2.0自带的npm包运行器将
+./node_modules/.bin/babel 缩短为npx babel
+你所需要的所有的babel模块都是作为独立的npm包发布的，并且这种模块化的设计能让每种工具都针对特定使用情况进行设计
+babel的核心功能包含在@babel/core模块中，可以通过以下命令安装:
+npm install --save-dev @babel/core
+你可以在JavaScript程序中直接require并使用它：
+const babel = require（"@babel/core"）;
+babel.transform("code",optionsObject);
+作为一名最终用户，你可以需要安装其他工具作为@babel/core的使用接口？并很好的集成到你的开发流程中
+@babel/cli是能够从终端命令行使用的工具
+这能解析src目录下的所有JavaScript文件，并应用我们所指定的代码转化功能，然后把每个文件输出到lib目录下。
+由于我们还没有指定任何代码转化功能，所以输出的代码和输入的代码的代码相同（不保留源代码格式），我们可以将我们所需的代码转化功能作为参数传递进去
+上述实例中用了--out-dir参数，我可以用 --help参数来查看命令行工具所能接受的所有参数列表（目前最重要的是--plugins和--presets）
+（插件和预设preset）
+代码转化功能以插件的形式出现，插件是小型的JavaScript程序，用于指导babel如何对代码进行转化，你甚至可以编写自己的插件将你所需的任何代码转化功能应用到你的代码上
+代码中有很多残留的es2015的特性，我们希望对它们进行转化，但是不需要一个一个加插件，可以用一个‘preset’（即预先设定的插件）
+就像插件一样，可以根据自己所需的插件组合创建一个自己的preset并将其分享出去。
+对于当前的用力，可以使用一个名称Wienv的preset
+除了上述的方法，也有另外一种支持传递参数的方法：配置文件（在babel.config.js）文件中
 
+
+# babel 这个编译器简单的工作方式（解析，转化，代码生成）
