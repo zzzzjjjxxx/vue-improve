@@ -468,3 +468,18 @@ module.exports = config
 loader被用于转化某些类型的模块，而插件可以用于执行范围更广的任务。插件的范围包括，从打包优化和压缩，一直到重新定义环境中的变量。插件接口功能及其强大
 可以处理各种任务。
 想要使用一个插件，你只需要require（）它，然后把它添加到plugins数组中。多数插件可以通过选项自定义。你也可以在配置文件中因为不通过目的而多次使用同一个插件
+webpack.config.js
+const HtmlWebpackPlugin = require('html-webpack-plugin'); // 通过 npm 安装
+const webpack = require('webpack'); // 用于访问内置插件
+const config = {
+  module: {
+    rules: [
+      { test: /\.txt$/, use: 'raw-loader' }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({template: './src/index.html'})
+  ]
+};
+
+module.exports = config;
