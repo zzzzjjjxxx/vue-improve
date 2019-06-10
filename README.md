@@ -349,7 +349,7 @@ npm install --save-dev @babel/core
 你可以在JavaScript程序中直接require并使用它：
 const babel = require（"@babel/core"）;
 babel.transform("code",optionsObject);
-作为一名最终用户，你可以需要安装其他工具作为@babel/core的使用接口？(webpack)并很好的集成到你的开发流程中
+作为一名最终用户，你可以需要安装其他工具作为@babel/core的使用接口？(webpack,gulp)并很好的集成到你的开发流程中
 @babel/cli是能够从终端命令行使用的工具
 这能解析src目录下的所有JavaScript文件，并应用我们所指定的代码转化功能，然后把每个文件输出到lib目录下。
 由于我们还没有指定任何代码转化功能，所以输出的代码和输入的代码的代码相同（不保留源代码格式），我们可以将我们所需的代码转化功能作为参数传递进去
@@ -380,3 +380,91 @@ babel将检查你的所有代码，以便查找目标环境中缺失的功能，
 Promise.resolve().finally();
 
 # babel 这个编译器简单的工作方式（解析，转化，代码生成）
+# webpack=》打包所有资源，打包所有图片，样式，表，脚本（用于分解项目的每个部分，方便调试检验测试）
+webpack是一个现代JavaScript应用程序的静态模块打包器。当webpack处理应用程序时，它会递归构建一个依赖关系图，其中包含应用程序所需的每个模块，然后将所这些模块打包成一个或者多个bundle
+webpack模块是什么：
+1.es2015的import语句（webpack2才可以直接用，1的话需要特定loader来转化）
+2.commonJS 里的require（）
+3.AMD define和require语句
+4.css、sass，less文件里的@import
+5.url（...）或者html文件<img src=...>中图片的链接
+webpack 通过loader可以支持各种语言和预处理器编写模块。loader描述了webpack如何处理非JavaScript模块，并且在bundle中引入这些依赖。
+webpack社区已经为各种语言构建了loader（TypeScript，sass,babel,stylus）
+webpack v4.0.0开始，可以不用引入一个配置文件。webpack任然是高度可配置的。
+它四歌核心的概念如下：
+1.入口（entry）
+  入口指示webpack应该使用哪个模块，来作为构建其内部依赖图的开始。进入入口起点后，webpack会找出有哪些模块和库是入口起点以来的的。
+  每个依赖随即被出来了，最后输出到称之为bundles的文件中?(下一章)
+  可以在通过webpack配置中配置entry属性，来指定一个起点（或多个入口起点）。默认值为./src
+  接下来我们看一个entry配置的最简单
+  webpack.config.js 文件夹中
+  module.exports = {
+  entry: './path/to/my/entry/file.js'
+  };
+  根据应用程序的需求配置entry属性，入口起点，
+  1.单个入口语法
+  上面的简写是来自 
+  const config = {
+    entry： {
+      main：'./path/to/my/entry/file.js'
+    }
+  }
+  当你向entry传入一个数组的时候会发生什么？向entry属性传入[文件路径数组]，将会创建多个主入口。在你想要多个依赖一起注入，并且
+  将它们的依赖导入到一个“chunk”时，传入数组的方式就很有用。
+  （只有一个入口起点的应用程序或工具）
+  常见场景
+  分离 应用程序【app】，和第三方库[vendor]入口
+  const config = {
+  entry：{
+  app：‘./src/app.js’,
+  vendors:'./src/vendors.js'
+  }
+  }
+  从表面上看，这告诉我们webpack从app.js和vendor.js开始创建依赖图，这些依赖图是彼此分离互相独立的（每个bundle中都有一个webpack引导）
+  这种方式常用在只有一个入口起点的单页面应用程序（）。
+  这个设置允许你使用你用commonChunkPlugin从应用程序bundle中提取vender引用到vendor bundle，并把引用vendor部分替换成_webpack_require__()调动，
+  如果引用程序bundle中没有vendor代码，name你可以在webpack中实现被称为长效缓存的通用模式？？
+  多页面应用程序
+  const config = {
+    entry: {
+    pageOne: './src/pageOne/index.js',
+    pageOone: './src/pageOone/index.js',
+    pageOoone: './src/pageOoone/index.js'
+    }
+  }
+  我们告诉webpack需要三个独立分离的依赖图
+  多页面应用中，每当页面跳转的时候，服务器将会为你获取一个新的html文档。页面重新加载文档，并且资源被重新下载，然而，这给了我们特殊的机会去做很多事：
+  使用commonChunkPlugin为每个页面间的应用程序共享代码创建bundle。由于入口起点增多，多页面应用能够复用入口点之间的大量代码（每个html文档只有一个入口点）
+2.输出（output）
+output属性告诉webpack在哪里输出它所创建的bundles，以及如何命名这些文件，默认值是./dist基本上
+整个应用程序结构，都会被编译到你指定的输出路径的文件夹中。你可以通过在配置中指定一个output字段，来配置这些处理过程，
+const path = require（‘path’）；// 它是一个node.js核心模块，用于操作文件路径
+module.exports = {
+entry: './path/to/entry/file.js',
+output：{
+  path: path.resove(_dirname, 'dist'),// webpack依赖的路径
+  filename： ‘my-first-webpack.bundle.js’ // webpack以来的名称
+}
+}
+3.loader
+loader让webpack能够去处理那些非JavaScript文件（因为webpack本身只理解JavaScript），loader可以将所有类型的文件转化成webpack能够处理的有效模块，然后你就可以用webpack的打包能力，对它们进行处理。
+在更高层面，在webpack的配置中loader有两个目标：
+1.test属性，用于标识出应该被对应的loader进行转化的某个或某些文件
+2.use属性，表示进行转化时，应该使用哪个loader
+const path = require（'path'）;
+const config = {
+  output: {
+    filename: 'my.bundle.js'
+  },
+  module： {
+    rules： [
+    { test:  /\.txt$/, use: 'raw-loader'} //嘿！webpack编辑器，当你碰到require（）/import语句中被解析为.txt 路径时，在你对它打包之前，先用raw-loader转化一下
+    ]
+  }
+};
+module.exports = config
+
+4.插件（plugins）
+loader被用于转化某些类型的模块，而插件可以用于执行范围更广的任务。插件的范围包括，从打包优化和压缩，一直到重新定义环境中的变量。插件接口功能及其强大
+可以处理各种任务。
+想要使用一个插件，你只需要require（）它，然后把它添加到plugins数组中。多数插件可以通过选项自定义。你也可以在配置文件中因为不通过目的而多次使用同一个插件
