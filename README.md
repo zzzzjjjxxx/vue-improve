@@ -483,3 +483,8 @@ const config = {
 };
 
 module.exports = config;
+# gulp和webpack的区别
+gulp构建工具，可以通过给gulp配置不通的task（通过gulp中的gulp.task()方法配置，比如启动server，sass、less预编译，文件的合并压缩）
+来让gulp实现不同的功能，从而构建整个前端的开发流程。
+gulp是对整个过程进行控制，所以其配置文件中配置的每个task对项目中该task配置路径下所有的资源都可以管理。
+！webpack中对资源文件的处理是通过入口文件产生的依赖形成的，不会像gulp那要，配置好路径之后，所有该路径下的规定的文件都会受到影响
