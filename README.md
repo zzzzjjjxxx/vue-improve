@@ -360,6 +360,23 @@ babel.transform("code",optionsObject);
 就像插件一样，可以根据自己所需的插件组合创建一个自己的preset并将其分享出去。
 对于当前的用力，可以使用一个名称Wienv的preset
 除了上述的方法，也有另外一种支持传递参数的方法：配置文件（在babel.config.js）文件中
-
+const presets = [
+["@babel/env",
+{
+targets: {
+edge: "17",
+firefox: "60",
+chorme: "67",
+safari: "11.1"
+},
+useBuiltIns: "usage"
+}
+]
+];
+moudle.exports = { presets }
+babel将检查你的所有代码，以便查找目标环境中缺失的功能，然后只把必须的polyfill包含进来。
+例如：Promise.resolve().finally();
+会被转化成 require（“core-js/modules/es.promise.finally”）;
+Promise.resolve().finally();
 
 # babel 这个编译器简单的工作方式（解析，转化，代码生成）
